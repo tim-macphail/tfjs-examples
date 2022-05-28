@@ -15,17 +15,16 @@
  * =============================================================================
  */
 
-const Papa = require('papaparse');
-
+const Papa = require("papaparse");
 
 // Boston Housing data constants:
 const BASE_URL =
-    'https://storage.googleapis.com/tfjs-examples/multivariate-linear-regression/data/';
+  "https://storage.googleapis.com/tfjs-examples/multivariate-linear-regression/data/";
 
-const TRAIN_FEATURES_FN = 'train-data.csv';
-const TRAIN_TARGET_FN = 'train-target.csv';
-const TEST_FEATURES_FN = 'test-data.csv';
-const TEST_TARGET_FN = 'test-target.csv';
+const TRAIN_FEATURES_FN = "train-data.csv";
+const TRAIN_TARGET_FN = "train-target.csv";
+const TEST_FEATURES_FN = "test-data.csv";
+const TEST_TARGET_FN = "test-target.csv";
 
 /**
  * Given CSV data returns an array of arrays of numbers.
@@ -35,9 +34,9 @@ const TEST_TARGET_FN = 'test-target.csv';
  * @returns {Promise.Array<number[]>} Resolves to data with values parsed as floats.
  */
 const parseCsv = async (data) => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     data = data.map((row) => {
-      return Object.keys(row).map(key => parseFloat(row[key]));
+      return Object.keys(row).map((key) => parseFloat(row[key]));
     });
     resolve(data);
   });
@@ -51,7 +50,7 @@ const parseCsv = async (data) => {
  * @returns {Promise.Array<number[]>} Resolves to parsed csv data.
  */
 export const loadCsv = async (filename) => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const url = `${BASE_URL}${filename}`;
 
     console.log(`  * Downloading data from: ${url}`);
@@ -59,9 +58,9 @@ export const loadCsv = async (filename) => {
       download: true,
       header: true,
       complete: (results) => {
-        resolve(parseCsv(results['data']));
-      }
-    })
+        resolve(parseCsv(results["data"]));
+      },
+    });
   });
 };
 
@@ -78,7 +77,7 @@ export class BostonHousingDataset {
   get numFeatures() {
     // If numFetures is accessed before the data is loaded, raise an error.
     if (this.trainFeatures == null) {
-      throw new Error('\'loadData()\' must be called before numFeatures')
+      throw new Error("'loadData()' must be called before numFeatures");
     }
     return this.trainFeatures[0].length;
   }
@@ -86,21 +85,32 @@ export class BostonHousingDataset {
   /** Loads training and test data. */
   async loadData() {
     [this.trainFeatures, this.trainTarget, this.testFeatures, this.testTarget] =
-        await Promise.all([
-          loadCsv(TRAIN_FEATURES_FN), loadCsv(TRAIN_TARGET_FN),
-          loadCsv(TEST_FEATURES_FN), loadCsv(TEST_TARGET_FN)
-        ]);
+      await Promise.all([
+        loadCsv(TRAIN_FEATURES_FN),
+        loadCsv(TRAIN_TARGET_FN),
+        loadCsv(TEST_FEATURES_FN),
+        loadCsv(TEST_TARGET_FN),
+      ]);
 
     shuffle(this.trainFeatures, this.trainTarget);
     shuffle(this.testFeatures, this.testTarget);
+    console.log("train features:", this.trainFeatures);
   }
 }
 
 export const featureDescriptions = [
-  'Crime rate', 'Land zone size', 'Industrial proportion', 'Next to river',
-  'Nitric oxide concentration', 'Number of rooms per house', 'Age of housing',
-  'Distance to commute', 'Distance to highway', 'Tax rate', 'School class size',
-  'School drop-out rate'
+  "Crime rate",
+  "Land zone size",
+  "Industrial proportion",
+  "Next to river",
+  "Nitric oxide concentration",
+  "Number of rooms per house",
+  "Age of housing",
+  "Distance to commute",
+  "Distance to highway",
+  "Tax rate",
+  "School class size",
+  "School drop-out rate",
 ];
 
 /**
@@ -123,4 +133,4 @@ function shuffle(data, target) {
     target[counter] = target[index];
     target[index] = temp;
   }
-};
+}
