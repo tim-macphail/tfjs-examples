@@ -84,34 +84,29 @@ export class BostonHousingDataset {
 
   /** Loads training and test data. */
   async loadData() {
-    [this.trainFeatures, this.trainTarget, this.testFeatures, this.testTarget] =
-      await Promise.all([
-        loadCsv(TRAIN_FEATURES_FN),
-        loadCsv(TRAIN_TARGET_FN),
-        loadCsv(TEST_FEATURES_FN),
-        loadCsv(TEST_TARGET_FN),
-      ]);
+    this.trainFeatures = [
+      [90, 1],
+      [80, 1],
+      [70, 1],
+      [60, 1],
+      [50, 1],
+    ];
+    this.trainTarget = [[5], [4], [3], [2], [1]];
+    this.testFeatures = [
+      [91, 1],
+      [81, 1],
+      [71, 1],
+      [61, 1],
+      [51, 1],
+    ];
+    this.testTarget = [[5], [4], [3], [2], [1]];
 
     shuffle(this.trainFeatures, this.trainTarget);
     shuffle(this.testFeatures, this.testTarget);
-    console.log("train features:", this.trainFeatures);
   }
 }
 
-export const featureDescriptions = [
-  "Crime rate",
-  "Land zone size",
-  "Industrial proportion",
-  "Next to river",
-  "Nitric oxide concentration",
-  "Number of rooms per house",
-  "Age of housing",
-  "Distance to commute",
-  "Distance to highway",
-  "Tax rate",
-  "School class size",
-  "School drop-out rate",
-];
+export const featureDescriptions = ["flow", "water level"];
 
 /**
  * Shuffles data and target (maintaining alignment) using Fisher-Yates
